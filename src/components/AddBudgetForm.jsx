@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Form, useFetcher } from "react-router-dom"
-import { CurrencyRupeeIcon } from "@heroicons/react/24/solid"
+import { CurrencyEuroIcon } from "@heroicons/react/24/solid"
 
 const AddBudgetForm = () => {
   const fetcher = useFetcher();
@@ -55,7 +55,7 @@ const AddBudgetForm = () => {
             isSubmitting ? <span>Submitting…</span> : (
               <>
                 <span>Create budget</span>
-                <CurrencyRupeeIcon width={20} />
+                <CurrencyEuroIcon width={20} />
               </>
             )
           }
