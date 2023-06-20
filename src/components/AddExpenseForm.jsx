@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useFetcher } from "react-router-dom"
 import { PlusCircleIcon } from "@heroicons/react/24/solid"
 
@@ -18,6 +18,23 @@ const AddExpenseForm = ({ budgets }) => {
     }
 
   }, [isSubmitting])
+
+  const [newExpenseAmount, setNewExpenseAmount] = useState('');
+
+  const handleInputChange = (event) => {
+    let inputValue = event.target.value;
+
+    // Remove non-numeric characters
+    inputValue = inputValue.replace(/[^0-9.]/g, '');
+
+    // Enforce maximum length
+    const maxLength = 10;
+    if (inputValue.length > maxLength) {
+      inputValue = inputValue.slice(0, maxLength);
+    }
+
+    setNewExpenseAmount(inputValue);
+  };
 
   return (
     <div className="form-wrapper">
@@ -39,6 +56,7 @@ const AddExpenseForm = ({ budgets }) => {
               name="newExpense"
               id="newExpense"
               placeholder="e.g., Milk"
+              maxLength="15"
               ref={focusRef}
               required
             />
@@ -46,13 +64,15 @@ const AddExpenseForm = ({ budgets }) => {
           <div className="grid-xs">
             <label htmlFor="newExpenseAmount">Amount</label>
             <input
-              type="number"
-              step="0.01"
-              inputMode="decimal"
+              type="text"
+              pattern="[0-9]*"
+              value={newExpenseAmount}
+              onChange={handleInputChange}
               name="newExpenseAmount"
               id="newExpenseAmount"
-              placeholder="e.g., €3.50"
+              placeholder="e.g., €200"
               required
+              inputMode="decimal"
             />
           </div>
         </div>

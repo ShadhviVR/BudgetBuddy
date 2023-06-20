@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Form, useFetcher } from "react-router-dom"
 import { CurrencyEuroIcon } from "@heroicons/react/24/solid"
 
@@ -15,6 +15,23 @@ const AddBudgetForm = () => {
       focusRef.current.focus()
     }
   }, [isSubmitting])
+
+  const [newBudgetAmount, setNewBudgetAmount] = useState('');
+
+  const handleInputChange = (event) => {
+    let inputValue = event.target.value;
+
+    // Remove non-numeric characters
+    inputValue = inputValue.replace(/[^0-9.]/g, '');
+
+    // Enforce maximum length
+    const maxLength = 10;
+    if (inputValue.length > maxLength) {
+      inputValue = inputValue.slice(0, maxLength);
+    }
+
+    setNewBudgetAmount(inputValue);
+  };
 
   return (
     <div className="form-wrapper">
@@ -35,13 +52,16 @@ const AddBudgetForm = () => {
             placeholder="e.g., Groceries"
             required
             ref={focusRef}
+            maxLength="15"
           />
         </div>
         <div className="grid-xs">
           <label htmlFor="newBudgetAmount">Amount</label>
           <input
-            type="number"
-            step="0.01"
+            type="text"
+            pattern="[0-9]*"
+            value={newBudgetAmount}
+            onChange={handleInputChange}
             name="newBudgetAmount"
             id="newBudgetAmount"
             placeholder="e.g., €200"
